@@ -6,6 +6,7 @@ use App\Models\Funcionario;
 use App\Models\Pessoa;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FuncionarioController extends Controller
 {
@@ -17,8 +18,9 @@ class FuncionarioController extends Controller
         try {
             $findFuncionario = Funcionario::where('id', $id)->first();
             if(empty($findFuncionario)){
-                return response()->json([], 200);
+                return response()->json(['Erro' => 'Funcionario não encontrado'], 404);
             }
+
             $id_pessoa = $findFuncionario->id_pessoa;
             $findPessoa = Pessoa::where('id', $id_pessoa)->first();
     
@@ -26,6 +28,26 @@ class FuncionarioController extends Controller
 
         } catch (Exception $err) { 
             
+            return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar funcionario'], 500);
+        }
+    }
+
+    public function indexAll(Request $request)
+    {
+
+        try {
+            //tratar para buscar funcionario de acordo com companie ou unidade
+            $listFuncionario = DB::table('funcionario')
+            ->select('funcionario.id', 'pessoa.nome', 'pessoa.nacionalidade', 'pessoa.rg', 'pessoa.data_nascimento', 'funcionario.created_at', 'funcionario.updated_at')
+            ->join('pessoa', 'funcionario.id_pessoa', '=', 'pessoa.id')->paginate(15);
+            
+            if(empty($listFuncionario)){
+                return response()->json([], 204);
+            }
+    
+            return response()->json(["data"=>$listFuncionario], 200);
+
+        } catch (Exception $err) { 
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar funcionario'], 500);
         }
     }
@@ -38,6 +60,7 @@ class FuncionarioController extends Controller
         $data_nascimento = $request->get('data_nascimento');
 
         try {
+            //chamar service que vai tratar os erros
             //cadastrar pessoa
             $newPessoa = new Pessoa();
             $newPessoa->nome = $nome;
@@ -50,8 +73,8 @@ class FuncionarioController extends Controller
             $newFuncionario = new Funcionario();
             $newFuncionario->id_pessoa = $id_pessoa;
             $newFuncionario->save();
-
             return response()->json(['data' => $newPessoa->getAttributes()], 200);
+
         } catch (Exception $err) {
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar o funcionário'], 500);
         }
