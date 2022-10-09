@@ -20,6 +20,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::post('funcionario', 'FuncionarioController@store');
-Route::get('funcionario/{id}', 'FuncionarioController@indexById');
-Route::get('funcionario', 'FuncionarioController@indexAll');
+Route::post('funcionarios', 'FuncionarioController@store');
+Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
+Route::get('funcionarios', 'FuncionarioController@indexAll');

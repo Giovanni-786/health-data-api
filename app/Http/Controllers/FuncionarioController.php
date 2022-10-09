@@ -26,7 +26,7 @@ class FuncionarioController extends Controller
 
         } catch (Exception $err) { 
             
-            return response()->json(['erro'=> 'ocorreu um erro inesperado ao listar funcionario'], 500);
+            return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar funcionario'], 500);
         }
     }
 
@@ -50,6 +50,8 @@ class FuncionarioController extends Controller
             $newFuncionario = new Funcionario();
             $newFuncionario->id_pessoa = $id_pessoa;
             $newFuncionario->save();
+
+            return response()->json(['data' => $newPessoa->getAttributes()], 200);
         } catch (Exception $err) {
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar o funcionário'], 500);
         }
