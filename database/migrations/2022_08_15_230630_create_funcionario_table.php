@@ -16,6 +16,8 @@ class CreateFuncionarioTable extends Migration
         Schema::create('funcionario', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('id_pessoa');
+            $table->string('cpf')->unique();
+            $table->string('rg')->unique();
             $table->timestamps();
 
             //Chaves estrangeiras

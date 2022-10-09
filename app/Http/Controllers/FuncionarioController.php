@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Funcionario;
 use App\Models\Pessoa;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -57,6 +58,8 @@ class FuncionarioController extends Controller
         $nome = $request->get('nome');
         $nacionalidade = $request->get('nacionalidade');
         $rg = $request->get('rg');
+        $cpf = $request->get('cpf');
+        $sexo = $request->get('sexo');
         $data_nascimento = $request->get('data_nascimento');
 
         try {
@@ -65,18 +68,24 @@ class FuncionarioController extends Controller
             $newPessoa = new Pessoa();
             $newPessoa->nome = $nome;
             $newPessoa->nacionalidade = $nacionalidade;
-            $newPessoa->rg = $rg;
+            $newPessoa->sexo = $sexo;
             $newPessoa->data_nascimento = $data_nascimento;
             $newPessoa->save();
 
             $id_pessoa = $newPessoa->id;
             $newFuncionario = new Funcionario();
             $newFuncionario->id_pessoa = $id_pessoa;
+            $newFuncionario->rg = $rg;
+            $newFuncionario->cpf = $cpf;
             $newFuncionario->save();
             return response()->json(['data' => $newPessoa->getAttributes()], 200);
 
-        } catch (Exception $err) {
-            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar o funcionário'], 500);
+        } catch (QueryException $err) {
+
+            if($err->getCode() === '23000'){
+                return response()->json(['Erro' => 'CPF ou RG já existem'], 500);
+            }
+            return response()->json(['Erro'=>'Ocorreu um erro inesperado ao salvar funcionario'], 500);
         }
     }
 }
