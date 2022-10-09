@@ -27,4 +27,5 @@ Route::get('funcionarios', 'FuncionarioController@indexAll');
 
 //ROTA DE PACIENTES
 Route::post('pacientes', 'PacienteController@store');
+Route::get('pacientes/{id}', 'PacienteController@indexById');
 

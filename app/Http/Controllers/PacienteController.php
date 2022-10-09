@@ -6,9 +6,45 @@ use App\Models\Paciente;
 use App\Models\Pessoa;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PacienteController extends Controller
 {
+
+    public function indexById($id)
+    {
+
+        try {
+            $findPaciente = Paciente::where('id', $id)->first();
+            if(empty($findPaciente)){
+                return response()->json([], 204);
+            }
+
+            $listFuncionario = DB::table('paciente')
+            ->select(
+            'paciente.id', 
+            'pessoa.nome', 
+            'pessoa.nacionalidade', 
+            'paciente.rg', 
+            'paciente.cpf', 
+            'paciente.altura',
+            'paciente.peso',
+            'paciente.tipo_sanguineo',
+            'paciente.id_patologias',
+            'paciente.id_alergias',
+            'paciente.id_medicamentos_controlados',
+            'pessoa.data_nascimento',
+            'paciente.created_at', 
+            'paciente.updated_at')
+            ->join('pessoa', 'paciente.id_pessoa', '=', 'pessoa.id')->paginate(15);
+    
+            return response()->json($listFuncionario, 200);
+
+        } catch (Exception $err) { 
+            return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         $nome = $request->get('nome');
@@ -23,8 +59,7 @@ class PacienteController extends Controller
         $idPatologia = $request->get('id_patologia');
         $idAlergia = $request->get('id_alergia');
         $idMedicamentosControlados = $request->get('id_medicamento_controlado');
-
-
+        
         try {
             //chamar service que vai tratar os erros
             //cadastrar pessoa
