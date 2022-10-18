@@ -15,7 +15,8 @@ class CreateTableAlergias extends Migration
     {
         Schema::create('alergias', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome')->unique();
+            $table->string('tipo')->nullable();
             $table->timestamps();
         });
     }

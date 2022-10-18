@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Funcionario;
 use App\Models\Pessoa;
+use App\Models\Pessoas;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -23,7 +24,7 @@ class FuncionarioController extends Controller
             }
 
             $id_pessoa = $findFuncionario->id_pessoa;
-            $findPessoa = Pessoa::where('id', $id_pessoa)->first();
+            $findPessoa = Pessoas::where('id', $id_pessoa)->first();
     
             return response()->json($findPessoa, 200);
 
@@ -65,7 +66,7 @@ class FuncionarioController extends Controller
         try {
             //chamar service que vai tratar os erros
             //cadastrar pessoa
-            $newPessoa = new Pessoa();
+            $newPessoa = new Pessoas();
             $newPessoa->nome = $nome;
             $newPessoa->nacionalidade = $nacionalidade;
             $newPessoa->sexo = $sexo;

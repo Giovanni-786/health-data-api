@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\Pacientes;
 use App\Models\Pessoa;
+use App\Models\Pessoas;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -11,11 +13,42 @@ use Illuminate\Support\Facades\DB;
 class PacienteController extends Controller
 {
 
+    public function indexAll(Request $request)
+    {
+
+        try {
+            //inserir as patologias, alergias e etc.
+            $listPaciente = DB::table('paciente')
+            ->select(
+            'paciente.id', 
+            'pessoa.nome', 
+            'pessoa.nacionalidade', 
+            'pessoa.data_nascimento',
+            'paciente.tipo_sanguineo',
+            'paciente.altura',
+            'paciente.peso',
+            'paciente.cpf',
+            'paciente.rg',
+            'paciente.created_at', 
+            'paciente.updated_at')
+            ->join('pessoa', 'paciente.id_pessoa', '=', 'pessoa.id')->paginate(15);
+            if(empty($listPaciente)){
+                return response()->json([], 204);
+            }
+    
+            return response()->json($listPaciente, 200);
+
+        } catch (Exception $err) { 
+            
+            return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
+        }
+    }
+
     public function indexById($id)
     {
 
         try {
-            $findPaciente = Paciente::where('id', $id)->first();
+            $findPaciente = Pacientes::where('id', $id)->first();
             if(empty($findPaciente)){
                 return response()->json([], 204);
             }
@@ -63,7 +96,7 @@ class PacienteController extends Controller
         try {
             //chamar service que vai tratar os erros
             //cadastrar pessoa
-            $newPessoa = new Pessoa();
+            $newPessoa = new Pessoas();
             $newPessoa->nome = $nome;
             $newPessoa->nacionalidade = $nacionalidade;
             $newPessoa->sexo = $sexo;
@@ -71,7 +104,7 @@ class PacienteController extends Controller
             $newPessoa->save();
             $id_pessoa = $newPessoa->id;
             
-            $newPaciente = new Paciente();
+            $newPaciente = new Pacientes();
             $newPaciente->id_pessoa = $id_pessoa;
             $newPaciente->tipo_sanguineo = $tipoSanguineo;
             $newPaciente->altura = $altura;
@@ -102,7 +135,7 @@ class PacienteController extends Controller
         } catch (Exception $err) {
 
             if($err->getCode() === '23000'){
-                return response()->json(['Erro' => 'CPF ou RG já existem'], 500);
+                return response()->json(['Erro' => 'CPF ou RG já existem'], 400);
             }
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar paciente'], 500);
         }

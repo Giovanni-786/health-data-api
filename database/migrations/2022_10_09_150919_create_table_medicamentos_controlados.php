@@ -15,7 +15,7 @@ class CreateTableMedicamentosControlados extends Migration
     {
         Schema::create('medicamentos_controlados', function (Blueprint $table) {
             $table->id();
-            $table->string('nome');
+            $table->string('nome')->unique();
             $table->string('dosagem');
             $table->string('unidade_medida');
             $table->timestamps();
