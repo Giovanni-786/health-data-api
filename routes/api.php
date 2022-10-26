@@ -32,6 +32,7 @@ Route::get('pacientes/{id}', 'PacienteController@indexById');
 
 //PATOLOGIAS
 Route::post('patologias', 'PatologiasController@store');
+Route::get('patologias', 'PatologiasController@indexAll');
 
 //ALERGIAS
 Route::post('alergias', 'AlergiasController@store');
