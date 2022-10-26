@@ -36,7 +36,6 @@ class FuncionarioController extends Controller
 
     public function indexAll(Request $request)
     {
-
         try {
             //tratar para buscar funcionario de acordo com companie ou unidade
             $listFuncionario = DB::table('funcionario')
@@ -82,11 +81,51 @@ class FuncionarioController extends Controller
             return response()->json(['data' => $newPessoa->getAttributes()], 200);
 
         } catch (QueryException $err) {
-
-            if($err->getCode() === '23000'){
-                return response()->json(['Erro' => 'CPF ou RG já existem'], 500);
-            }
             return response()->json(['Erro'=>'Ocorreu um erro inesperado ao salvar funcionario'], 500);
         }
     }
+
+    public function update(Request $request, $id)
+    {
+        //pegar o id do paciente pelo parametro recebido
+        //buscar pelo eloquent
+        //atualizar dado.
+        $nome = $request->get('nome');
+        $nacionalidade = $request->get('nacionalidade');
+        $rg = $request->get('rg');
+        $cpf = $request->get('cpf');
+        $sexo = $request->get('sexo');
+        $data_nascimento = $request->get('data_nascimento');
+
+        try {
+            $findFuncionarioById = Funcionario::where('id', $id)->first();
+            if($findFuncionarioById){
+                //pegar o id pessoa para atualizar/
+                $findPessoaById = Pessoas::where('id', $findFuncionarioById->id_pessoa)->first();
+                if($findPessoaById){
+                    $findPessoaById->nome = $nome;
+                    $findPessoaById->nacionalidade = $nacionalidade;
+                    $findPessoaById->sexo = $sexo;
+                    $findPessoaById->data_nascimento = $data_nascimento;
+                    $findPessoaById->save();
+
+                    $findFuncionarioById->rg = $rg;
+                    $findFuncionarioById->cpf = $cpf;
+                    $findFuncionarioById->save();
+
+                    return response()->json(['data' => $findPessoaById->getAttributes()], 200);
+                } 
+            }  
+            
+            if(!$findFuncionarioById){
+                return response()->json(['Erro' => 'Ocorreu um erro inesperado ao atualizar funcionário'], 500);
+            }
+
+
+        } catch (QueryException $err) {
+            return response()->json(['Erro'=>'Ocorreu um erro inesperado ao atualizar funcionario'], 500);
+        }
+    }
 }
+
+

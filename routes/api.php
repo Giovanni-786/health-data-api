@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 //ROTA DE FUNCIONÁRIOS
 Route::post('funcionarios', 'FuncionarioController@store');
+Route::put('funcionarios/{id}', 'FuncionarioController@update');
 Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
 Route::get('funcionarios', 'FuncionarioController@indexAll');
 
