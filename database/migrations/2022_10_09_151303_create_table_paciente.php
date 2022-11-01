@@ -20,17 +20,7 @@ class CreateTablePaciente extends Migration
             $table->integer('peso')->nullable();
             $table->string('cpf')->unique();
             $table->string('rg')->unique();
-            $table->unsignedBigInteger('id_pessoa')->nullable();
-            $table->unsignedBigInteger('id_patologias')->nullable();
-            $table->unsignedBigInteger('id_alergias')->nullable();
-            $table->unsignedBigInteger('id_medicamentos_controlados')->nullable();
             $table->timestamps();
-
-
-            $table->foreign('id_pessoa')->references('id')->on('pessoa');
-            $table->foreign('id_patologias')->references('id')->on('patologias');
-            $table->foreign('id_alergias')->references('id')->on('alergias');
-            $table->foreign('id_medicamentos_controlados')->references('id')->on('medicamentos_controlados');
         });
     }
 

@@ -49,7 +49,7 @@ class PacienteController extends Controller
 
         try {
             $findPaciente = Pacientes::where('id', $id)->first();
-            if(empty($findPaceinte)){
+            if(empty($findPaciente)){
                 return response()->json([], 204);
             }
 
