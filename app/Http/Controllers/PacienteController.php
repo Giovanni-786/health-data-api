@@ -49,7 +49,7 @@ class PacienteController extends Controller
 
         try {
             $findPaciente = Pacientes::where('id', $id)->first();
-            if(empty($findPaciente)){
+            if(empty($findPaceinte)){
                 return response()->json([], 204);
             }
 
@@ -134,10 +134,70 @@ class PacienteController extends Controller
 
         } catch (Exception $err) {
 
-            if($err->getCode() === '23000'){
-                return response()->json(['Erro' => 'CPF ou RG já existem'], 400);
-            }
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar paciente'], 500);
+        }
+    }
+
+    public function update(Request $request, $id){
+        $nome = $request->get('nome');
+        $nacionalidade = $request->get('nacionalidade');
+        $rg = $request->get('rg');
+        $cpf = $request->get('cpf');
+        $data_nascimento = $request->get('data_nascimento');
+        $sexo = $request->get('sexo');
+        $tipoSanguineo = $request->get('tipo_sanguineo');
+        $altura = $request->get('altura');
+        $peso = $request->get('peso');
+        $idPatologia = $request->get('id_patologia');
+        $idAlergia = $request->get('id_alergia');
+        $idMedicamentosControlados = $request->get('id_medicamento_controlado');
+        
+        try{
+            $findPacienteById = Pacientes::where('id', $id)->first();
+            if($findPacienteById){
+                $findPessoaById = Pessoas::where('id', $findPacienteById->id_pessoa)->first();
+                if($findPessoaById){
+                    
+                    $findPessoaById->nome = $nome;
+                    $findPessoaById->nacionalidade = $nacionalidade;
+                    $findPessoaById->sexo = $sexo;
+                    $findPessoaById->data_nascimento = $data_nascimento;
+                    $findPessoaById->save();
+
+                    $findPacienteById->rg = $rg;
+                    $findPacienteById->cpf = $cpf;
+                    $findPacienteById->tipo_sanguineo = $tipoSanguineo;
+                    $findPacienteById->altura = $altura;
+                    $findPacienteById->peso = $peso;
+                    $findPacienteById->id_pessoa = $findPacienteById->id_pessoa;
+                    $findPacienteById->id_patologias = $idPatologia;
+                    $findPacienteById->id_alergias = $idAlergia;
+                    $findPacienteById->id_medicamentos_controlados = $idMedicamentosControlados;
+                    $findPacienteById->save();
+                    
+                    return response()->json([
+                    'id' => $findPacienteById->id, 
+                    'nome' => $findPessoaById->nome,
+                    'nacionalidade' => $findPessoaById->nacionalidade,
+                    'sexo' => $findPessoaById->sexo,
+                    'data_nascimento'=> $findPessoaById->data_nascimento,
+                    'tipo_sanguineo' => $findPacienteById->tipo_sanguineo, 
+                    'altura' => $findPacienteById->altura,
+                    'peso' => $findPacienteById->peso,
+                    'cpf' => $findPacienteById->cpf,
+                    'rg' => $findPacienteById->rg,
+                    'created_at' => $findPacienteById->created_at,
+                    'updated_at' => $findPacienteById->updated_at
+                ], 200);
+                }
+            }
+            if(!$findPacienteById){
+                return response()->json(['Erro' => 'Id informado não encontrado'], 404);
+            }
+
+        }catch(Exception $err){
+            dd($err);
+            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao atualizar paciente'], 500);
         }
     }
 }

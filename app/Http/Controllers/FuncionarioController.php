@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Funcionario;
 use App\Models\Pessoa;
 use App\Models\Pessoas;
+use App\Services\FuncionarioService;
 use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -12,7 +13,10 @@ use Illuminate\Support\Facades\DB;
 
 class FuncionarioController extends Controller
 {
-
+    public function __construct()
+    {
+        $this->funcionarioService = new FuncionarioService();
+    }
 
     public function indexById($id)
     {
@@ -36,11 +40,13 @@ class FuncionarioController extends Controller
 
     public function indexAll(Request $request)
     {
+        $perPage = $request->get('perPage');
+
         try {
-            //tratar para buscar funcionario de acordo com companie ou unidade
+            
             $listFuncionario = DB::table('funcionario')
             ->select('funcionario.id', 'pessoa.nome', 'pessoa.nacionalidade', 'pessoa.rg', 'pessoa.data_nascimento', 'funcionario.created_at', 'funcionario.updated_at')
-            ->join('pessoa', 'funcionario.id_pessoa', '=', 'pessoa.id')->paginate(15);
+            ->join('pessoa', 'funcionario.id_pessoa', '=', 'pessoa.id')->paginate($perPage ?? 15);
             
             if(empty($listFuncionario)){
                 return response()->json([], 204);
@@ -55,6 +61,11 @@ class FuncionarioController extends Controller
 
     public function store(Request $request)
     {
+        // $checkData = $this->funcionarioService->checkStore($request->all());
+        // if($checkData){
+        //     return response()->json($checkData->getData(), $checkData->getStatusCode());
+        // }
+
         $nome = $request->get('nome');
         $nacionalidade = $request->get('nacionalidade');
         $rg = $request->get('rg');
@@ -63,8 +74,6 @@ class FuncionarioController extends Controller
         $data_nascimento = $request->get('data_nascimento');
 
         try {
-            //chamar service que vai tratar os erros
-            //cadastrar pessoa
             $newPessoa = new Pessoas();
             $newPessoa->nome = $nome;
             $newPessoa->nacionalidade = $nacionalidade;
@@ -118,7 +127,7 @@ class FuncionarioController extends Controller
             }  
             
             if(!$findFuncionarioById){
-                return response()->json(['Erro' => 'Ocorreu um erro inesperado ao atualizar funcionário'], 500);
+                return response()->json(['Erro' => 'Id informado não encontrado'], 404);
             }
 
 

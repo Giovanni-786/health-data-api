@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 //ROTA DE FUNCIONÁRIOS
+
 Route::post('funcionarios', 'FuncionarioController@store');
 Route::put('funcionarios/{id}', 'FuncionarioController@update');
 Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
@@ -28,6 +29,7 @@ Route::get('funcionarios', 'FuncionarioController@indexAll');
 
 //ROTA DE PACIENTES
 Route::post('pacientes', 'PacienteController@store');
+Route::put('pacientes/{id}', 'PacienteController@update');
 Route::get('pacientes', 'PacienteController@indexAll');
 Route::get('pacientes/{id}', 'PacienteController@indexById');
 
