@@ -15,6 +15,10 @@ class CreateTablePaciente extends Migration
     {
         Schema::create('paciente', function (Blueprint $table) {
             $table->id();
+            $table->string('nome');
+            $table->string('nacionalidade')->nullable();
+            $table->string('sexo')->nullable();
+            $table->timestamp('data_nascimento')->nullable();
             $table->string('tipo_sanguineo')->nullable();
             $table->string('altura')->nullable();
             $table->integer('peso')->nullable();

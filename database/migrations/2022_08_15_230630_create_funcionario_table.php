@@ -15,13 +15,13 @@ class CreateFuncionarioTable extends Migration
     {
         Schema::create('funcionario', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_pessoa');
+            $table->string('nome');
+            $table->string('nacionalidade')->nullable();
+            $table->string('sexo')->nullable();
+            $table->timestamp('data_nascimento')->nullable();
             $table->string('cpf')->unique();
             $table->string('rg')->unique();
             $table->timestamps();
-
-            //Chaves estrangeiras
-            $table->foreign('id_pessoa')->references('id')->on('pessoa'); //Nome da chave estrangeira: stores_user_id_foreign
         });
     }
 
