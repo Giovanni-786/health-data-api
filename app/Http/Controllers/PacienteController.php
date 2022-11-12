@@ -36,7 +36,6 @@ class PacienteController extends Controller
             return response()->json($listPaciente, 200);
 
         } catch (Exception $err) { 
-            
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
         }
     }

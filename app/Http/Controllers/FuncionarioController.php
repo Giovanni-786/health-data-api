@@ -74,20 +74,15 @@ class FuncionarioController extends Controller
         $data_nascimento = $request->get('data_nascimento');
 
         try {
-            $newPessoa = new Pessoas();
-            $newPessoa->nome = $nome;
-            $newPessoa->nacionalidade = $nacionalidade;
-            $newPessoa->sexo = $sexo;
-            $newPessoa->data_nascimento = $data_nascimento;
-            $newPessoa->save();
-
-            $id_pessoa = $newPessoa->id;
             $newFuncionario = new Funcionario();
-            $newFuncionario->id_pessoa = $id_pessoa;
+            $newFuncionario->nome = $nome;
+            $newFuncionario->nacionalidade = $nacionalidade;
+            $newFuncionario->sexo = $sexo;
+            $newFuncionario->data_nascimento = $data_nascimento;
             $newFuncionario->rg = $rg;
             $newFuncionario->cpf = $cpf;
             $newFuncionario->save();
-            return response()->json(['data' => $newPessoa->getAttributes()], 200);
+            return response()->json(['data' => $newFuncionario->getAttributes()], 200);
 
         } catch (QueryException $err) {
             return response()->json(['Erro'=>'Ocorreu um erro inesperado ao salvar funcionario'], 500);

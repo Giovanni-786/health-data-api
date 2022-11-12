@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTableEndereco extends Migration
+class CreateTableMedicoEspecialidade extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateTableEndereco extends Migration
      */
     public function up()
     {
-        Schema::create('table_endereco', function (Blueprint $table) {
+        Schema::create('medico_especialidade', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ class CreateTableEndereco extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_endereco');
+        Schema::dropIfExists('table_medico_especialidade');
     }
 }
