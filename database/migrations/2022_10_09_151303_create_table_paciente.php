@@ -24,6 +24,7 @@ class CreateTablePaciente extends Migration
             $table->integer('peso')->nullable();
             $table->string('cpf')->unique();
             $table->string('rg')->unique();
+            $table->mediumText('alergias')->nullable();
             $table->timestamps();
         });
     }
