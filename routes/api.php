@@ -39,4 +39,7 @@ Route::get('patologias', 'PatologiasController@indexAll');
 
 //ALERGIAS
 Route::post('alergias', 'AlergiasController@store');
+Route::put('alergias/{id}', 'AlergiasController@update');
+Route::get('alergias', 'AlergiasController@indexAll');
+Route::get('alergias/{id}', 'AlergiasController@indexById');
 
