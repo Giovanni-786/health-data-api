@@ -15,11 +15,12 @@ class TablePacienteAlergia extends Migration
     {
         Schema::create('paciente_alergia', function (Blueprint $table) {
             $table->id();
+            $table->string('nome_alergia')->nullable();
             $table->unsignedBigInteger('id_paciente')->nullable();
-            $table->unsignedBigInteger('id_alergias')->nullable();
+            $table->unsignedBigInteger('id_alergia')->nullable();
             $table->foreign('id_paciente')->references('id')->on('paciente');            
-            $table->foreign('id_alergias')->references('id')->on('alergias');
-            
+            $table->foreign('id_alergia')->references('id')->on('alergias');
+            $table->timestamps();
         });
     }
 

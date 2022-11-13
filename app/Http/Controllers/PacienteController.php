@@ -3,12 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Paciente;
+use App\Models\PacienteAlergia;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class PacienteController extends Controller
 {
+
+    public function __construct(PacienteAlergiaController $pacienteAlergia)
+    {   
+        $this->pacienteAlergia = $pacienteAlergia;
+    }
 
     public function indexAll(Request $request)
     {
@@ -80,9 +87,11 @@ class PacienteController extends Controller
         $tipoSanguineo = $request->get('tipo_sanguineo');
         $altura = $request->get('altura');
         $peso = $request->get('peso');
-        
+        $alergiasId = $request->get('alergiasId');
+
         try {
             
+            //obter array de objetos das alergias e salvar no controller de paciente_alergias.
             $newPaciente = new Paciente();
             $newPaciente->nome = $nome;
             $newPaciente->nacionalidade = $nacionalidade;
@@ -94,6 +103,12 @@ class PacienteController extends Controller
             $newPaciente->cpf = $cpf;
             $newPaciente->peso = $peso;
             $newPaciente->save();
+
+            //salvar alergias
+            $storeAlergias = $this->pacienteAlergia->store($alergiasId, $newPaciente->id);
+            if(is_string($storeAlergias)){
+                return response()->json(['Erro' => $storeAlergias], 404);
+            }
 
             return response()->json([
             'id' => $newPaciente->id, 
@@ -108,9 +123,8 @@ class PacienteController extends Controller
             'peso' => $newPaciente->peso,
         ], 200);
 
-        } catch (Exception $err) {
-
-            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar paciente'], 500);
+        } catch (Throwable $th) {
+            return response()->json($th, 400);
         }
     }
 
