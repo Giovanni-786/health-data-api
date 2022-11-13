@@ -10,11 +10,25 @@ use Illuminate\Support\Facades\DB;
 
 class PatologiasController extends Controller
 {
+    public function indexById(Request $request, $id){
+        try{
+            $findPatologia = Patologias::where('id', $id)->first();
+
+            if(empty($findPatologia)){
+                return response()->json(['Erro'=>'Patologia não encontrada'], 404);
+            }
+
+            return response()->json($findPatologia, 200);
+
+        }catch(Exception $err){
+            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao listar patologias.'], 500);
+        }
+    }
+
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
         try{
-            $listPatologias = DB::table('patologias')->select('nome', 'created_at', 'updated_at')->paginate($perPage ?? 15);
-
+            $listPatologias = DB::table('patologias')->select('nome', 'tipo', 'created_at', 'updated_at')->paginate($perPage ?? 15);
             return response()->json($listPatologias, 200);
 
         }catch(Exception $err){
@@ -23,25 +37,47 @@ class PatologiasController extends Controller
     }
 
     public function store(Request $request){
-        //obter informação e salvar no banco
         $nome = $request->get('nome');
-
+        $tipo_patologia = $request->get('tipo_patologia');
+    
         try{
             $newPatologia = new Patologias();
             $newPatologia->nome = $nome;
+            $newPatologia->tipo = $tipo_patologia;
             $newPatologia->save();
 
             return response()->json([
             'id' => $newPatologia->id, 
             'nome' => $newPatologia->nome, 
+            'tipo_patologia' => $newPatologia->tipo, 
             'created_at' => $newPatologia->created_at,
             'updated_at' => $newPatologia->updated_at
         ], 200);
 
         }catch(Exception $err){
-            if($err->getCode() === '23000'){
-                return response()->json(['Erro' => 'Nome já existe'], 400);
-            }
+            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar patologia'], 500);
+        }
+    }
+
+    public function update(Request $request, $id){
+        $nome = $request->get('nome');
+        $tipo_patologia = $request->get('tipo_patologia');
+    
+        try{
+            $findPatologia = Patologias::where('id', $id)->first();
+            $findPatologia->nome = $nome;
+            $findPatologia->tipo = $tipo_patologia;
+            $findPatologia->save();
+
+            return response()->json([
+            'id' => $findPatologia->id, 
+            'nome' => $findPatologia->nome, 
+            'tipo_patologia' => $findPatologia->tipo, 
+            'created_at' => $findPatologia->created_at,
+            'updated_at' => $findPatologia->updated_at
+        ], 200);
+
+        }catch(Exception $err){
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar patologia'], 500);
         }
     }
