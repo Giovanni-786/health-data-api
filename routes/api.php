@@ -42,3 +42,8 @@ Route::put('alergias/{id}', 'AlergiasController@update');
 Route::get('alergias', 'AlergiasController@indexAll');
 Route::get('alergias/{id}', 'AlergiasController@indexById');
 
+//ROTA DE MEDICAMENTOS
+Route::post('medicamentos', 'MedicamentosController@store');
+Route::put('medicamentos/{id}', 'MedicamentosController@update');
+Route::get('medicamentos', 'MedicamentosController@indexAll');
+Route::get('medicamentos/{id}', 'MedicamentosController@indexById');
