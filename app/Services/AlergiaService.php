@@ -22,6 +22,24 @@ class AlergiaService
             }
         }
     
-    }   
+    }
+    
+    public function findAlergiasAndCreateObject($alergiaIds)
+    {
+        $alergiaObj = array();
+        foreach($alergiaIds as $alergiaId){
+            $findAlergia = Alergias::where('id', $alergiaId)->first();
+            $arr = array(
+                'id' => $alergiaId,
+                'nome' => $findAlergia->nome,
+                'tipo_alergia' => $findAlergia->tipo 
+            );
+
+            array_push($alergiaObj, $arr);
+        }
+
+        return $alergiaObj;
+    
+    } 
 
 }

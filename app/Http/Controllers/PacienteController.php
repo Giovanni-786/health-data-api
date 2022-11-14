@@ -23,7 +23,6 @@ class PacienteController extends Controller
         $perPage = $request->get('perPage');
 
         try {
-            //inserir as patologias, alergias e etc.
             $listPaciente = DB::table('paciente')
             ->select(
             'paciente.id', 
@@ -36,7 +35,10 @@ class PacienteController extends Controller
             'paciente.cpf',
             'paciente.rg',
             'paciente.created_at', 
-            'paciente.updated_at')->paginate($perPage ?? 15);
+            'paciente.updated_at')
+            ->paginate($perPage ?? 15);
+
+
             if(empty($listPaciente)){
                 return response()->json([], 204);
             }
@@ -96,7 +98,9 @@ class PacienteController extends Controller
             if(is_string($checkAlergiasId)){
                 return response()->json(['Erro' => $checkAlergiasId], 404);
             }
-        
+
+            $alergiasObj = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+            
             $newPaciente = new Paciente();
             $newPaciente->nome = $nome;
             $newPaciente->nacionalidade = $nacionalidade;
@@ -107,10 +111,10 @@ class PacienteController extends Controller
             $newPaciente->rg = $rg;
             $newPaciente->cpf = $cpf;
             $newPaciente->peso = $peso;
-            $newPaciente->alergias = serialize($alergiasId);
+            $newPaciente->alergias = serialize($alergiasObj);
             $newPaciente->save();
         
-            return response()->json([
+            return response()->json([ 
             'id' => $newPaciente->id, 
             'nome' => $newPaciente->nome, 
             'nacionalidade' => $newPaciente->nacionalidade, 
