@@ -154,6 +154,8 @@ class PacienteController extends Controller
                     return response()->json(['Erro' => $checkAlergiasId], 404);
                 }
 
+                $alergiasObj = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+
                 $findPacienteById->nome = $nome;
                 $findPacienteById->nacionalidade = $nacionalidade;
                 $findPacienteById->sexo = $sexo;
@@ -163,7 +165,7 @@ class PacienteController extends Controller
                 $findPacienteById->tipo_sanguineo = $tipoSanguineo;
                 $findPacienteById->altura = $altura;
                 $findPacienteById->peso = $peso;
-                $findPacienteById->alergias = serialize($alergiasId);
+                $findPacienteById->alergias = serialize($alergiasObj);
                 $findPacienteById->save();
             
               
@@ -184,6 +186,7 @@ class PacienteController extends Controller
                 'updated_at' => $findPacienteById->updated_at
             ], 200);
             }
+            
             if(!$findPacienteById){
                 return response()->json(['Erro' => 'Id paciente informado não encontrado'], 404);
             }
