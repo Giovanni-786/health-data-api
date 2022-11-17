@@ -21,9 +21,9 @@ class AlergiaService
                 return ('ID ' . $alergiaId . " não encontrado");
             }
         }
-    
+
     }
-    
+
     public function findAlergiasAndCreateObject($alergiaIds)
     {
         $alergiaObj = array();
@@ -32,14 +32,14 @@ class AlergiaService
             $arr = array(
                 'id' => $alergiaId,
                 'nome' => $findAlergia->nome,
-                'tipo_alergia' => $findAlergia->tipo 
+                'tipo_alergia' => $findAlergia->tipo
             );
 
             array_push($alergiaObj, $arr);
         }
 
         return $alergiaObj;
-    
-    } 
+
+    }
 
 }

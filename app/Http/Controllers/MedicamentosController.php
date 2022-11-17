@@ -41,7 +41,7 @@ class MedicamentosController extends Controller
         $nome = $request->get('nome');
         $dosagem = $request->get('dosagem');
         $unidade_medida = $request->get('unidade_medida');
-    
+
         try{
             $newMedicamento = new Medicamentos();
             $newMedicamento->nome = $nome;
@@ -50,10 +50,10 @@ class MedicamentosController extends Controller
             $newMedicamento->save();
 
             return response()->json([
-            'id' => $newMedicamento->id, 
-            'nome' => $newMedicamento->nome, 
+            'id' => $newMedicamento->id,
+            'nome' => $newMedicamento->nome,
             'dosagem' => $newMedicamento->dosagem,
-            'unidade_medida' => $newMedicamento->unidade_medida, 
+            'unidade_medida' => $newMedicamento->unidade_medida,
             'created_at' => $newMedicamento->created_at,
             'updated_at' => $newMedicamento->updated_at
         ], 200);
@@ -67,7 +67,7 @@ class MedicamentosController extends Controller
         $nome = $request->get('nome');
         $dosagem = $request->get('dosagem');
         $unidade_medida = $request->get('unidade_medida');
-    
+
         try{
             $findMedicamento = Medicamentos::where('id', $id)->first();
             $findMedicamento->nome = $nome;
@@ -76,10 +76,10 @@ class MedicamentosController extends Controller
             $findMedicamento->save();
 
             return response()->json([
-            'id' => $findMedicamento->id, 
-            'nome' => $findMedicamento->nome, 
+            'id' => $findMedicamento->id,
+            'nome' => $findMedicamento->nome,
             'dosagem' => $findMedicamento->dosagem,
-            'unidade_medida' => $findMedicamento->unidade_medida, 
+            'unidade_medida' => $findMedicamento->unidade_medida,
             'created_at' => $findMedicamento->created_at,
             'updated_at' => $findMedicamento->updated_at
         ], 200);

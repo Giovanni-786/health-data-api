@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alergias;
 use App\Models\Paciente;
 use App\Models\PacienteAlergia;
 use App\Services\AlergiaService;
@@ -14,7 +15,7 @@ class PacienteController extends Controller
 {
 
     public function __construct(AlergiaService $alergiaService)
-    {   
+    {
         $this->alergiaService = $alergiaService;
     }
 
@@ -25,27 +26,27 @@ class PacienteController extends Controller
         try {
             $listPaciente = DB::table('paciente')
             ->select(
-            'paciente.id', 
-            'paciente.nome', 
-            'paciente.nacionalidade', 
+            'paciente.id',
+            'paciente.nome',
+            'paciente.nacionalidade',
             'paciente.data_nascimento',
             'paciente.tipo_sanguineo',
             'paciente.altura',
             'paciente.peso',
             'paciente.cpf',
             'paciente.rg',
-            'paciente.created_at', 
+            'paciente.alergias',
+            'paciente.created_at',
             'paciente.updated_at')
             ->paginate($perPage ?? 15);
-
 
             if(empty($listPaciente)){
                 return response()->json([], 204);
             }
-    
+
             return response()->json($listPaciente, 200);
 
-        } catch (Exception $err) { 
+        } catch (Exception $err) {
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
         }
     }
@@ -60,21 +61,23 @@ class PacienteController extends Controller
 
             $listPaciente = DB::table('paciente')
             ->select(
-            'paciente.id', 
-            'paciente.nome', 
-            'paciente.nacionalidade', 
-            'paciente.rg', 
-            'paciente.cpf', 
+            'paciente.id',
+            'paciente.nome',
+            'paciente.nacionalidade',
+            'paciente.rg',
+            'paciente.cpf',
             'paciente.altura',
             'paciente.peso',
             'paciente.tipo_sanguineo',
             'paciente.data_nascimento',
-            'paciente.created_at', 
+            'paciente.alergias',
+            'paciente.created_at',
             'paciente.updated_at')->paginate(15);
-    
+
             return response()->json($listPaciente, 200);
 
-        } catch (Exception $err) { 
+        } catch (Exception $err) {
+            dd($err);
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
         }
     }
@@ -99,8 +102,8 @@ class PacienteController extends Controller
                 return response()->json(['Erro' => $checkAlergiasId], 404);
             }
 
-            $alergiasObj = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
-            
+            $alergiasJson = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+
             $newPaciente = new Paciente();
             $newPaciente->nome = $nome;
             $newPaciente->nacionalidade = $nacionalidade;
@@ -111,24 +114,15 @@ class PacienteController extends Controller
             $newPaciente->rg = $rg;
             $newPaciente->cpf = $cpf;
             $newPaciente->peso = $peso;
-            $newPaciente->alergias = serialize($alergiasObj);
+            $newPaciente->alergias = json_encode($alergiasJson);
             $newPaciente->save();
-        
-            return response()->json([ 
-            'id' => $newPaciente->id, 
-            'nome' => $newPaciente->nome, 
-            'nacionalidade' => $newPaciente->nacionalidade, 
-            'sexo' => $newPaciente->sexo,
-            'data_nascimento' => $newPaciente->data_nascimento,
-            'tipo_sanguineo' => $newPaciente->tipo_sanguineo,
-            'altura' => $newPaciente->altura,
-            'rg' => $newPaciente->rg,
-            'cpf' => $newPaciente->cpf,
-            'peso' => $newPaciente->peso,
-            'alergias' => unserialize($newPaciente->alergias)
+
+            return response()->json([
+                $newPaciente->getAttributes()
         ], 200);
 
         } catch (\Throwable $th) {
+            dd($th);
             return response()->json($th, 400);
         }
     }
@@ -144,8 +138,8 @@ class PacienteController extends Controller
         $altura = $request->get('altura');
         $peso = $request->get('peso');
         $alergiasId = $request->get('alergiasId');
-        
-        
+
+
         try{
             $findPacienteById = Paciente::where('id', $id)->first();
             if($findPacienteById){
@@ -167,15 +161,15 @@ class PacienteController extends Controller
                 $findPacienteById->peso = $peso;
                 $findPacienteById->alergias = serialize($alergiasObj);
                 $findPacienteById->save();
-            
-              
+
+
                 return response()->json([
-                'id' => $findPacienteById->id, 
+                'id' => $findPacienteById->id,
                 'nome' => $findPacienteById->nome,
                 'nacionalidade' => $findPacienteById->nacionalidade,
                 'sexo' => $findPacienteById->sexo,
                 'data_nascimento'=> $findPacienteById->data_nascimento,
-                'tipo_sanguineo' => $findPacienteById->tipo_sanguineo, 
+                'tipo_sanguineo' => $findPacienteById->tipo_sanguineo,
                 'altura' => $findPacienteById->altura,
                 'peso' => $findPacienteById->peso,
                 'rg' => $findPacienteById->rg,
@@ -186,7 +180,7 @@ class PacienteController extends Controller
                 'updated_at' => $findPacienteById->updated_at
             ], 200);
             }
-            
+
             if(!$findPacienteById){
                 return response()->json(['Erro' => 'Id paciente informado não encontrado'], 404);
             }
