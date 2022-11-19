@@ -6,6 +6,8 @@ use App\Models\Alergias;
 use App\Models\Paciente;
 use App\Models\PacienteAlergia;
 use App\Services\AlergiaService;
+use App\Services\MedicamentoService;
+use App\Services\PatologiaService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,9 +16,11 @@ use Illuminate\Support\Facades\DB;
 class PacienteController extends Controller
 {
 
-    public function __construct(AlergiaService $alergiaService)
+    public function __construct(AlergiaService $alergiaService, MedicamentoService $medicamentoService, PatologiaService $patologiaService)
     {
         $this->alergiaService = $alergiaService;
+        $this->medicamentoService = $medicamentoService;
+        $this->patologiaService = $patologiaService;
     }
 
     public function indexAll(Request $request)
@@ -24,21 +28,7 @@ class PacienteController extends Controller
         $perPage = $request->get('perPage');
 
         try {
-            $listPaciente = DB::table('paciente')
-            ->select(
-            'paciente.id',
-            'paciente.nome',
-            'paciente.nacionalidade',
-            'paciente.data_nascimento',
-            'paciente.tipo_sanguineo',
-            'paciente.altura',
-            'paciente.peso',
-            'paciente.cpf',
-            'paciente.rg',
-            'paciente.alergias',
-            'paciente.created_at',
-            'paciente.updated_at')
-            ->paginate($perPage ?? 15);
+            $listPaciente = Paciente::paginate($perPage ?? 15);
 
             if(empty($listPaciente)){
                 return response()->json([], 204);
@@ -59,25 +49,9 @@ class PacienteController extends Controller
                 return response()->json([], 204);
             }
 
-            $listPaciente = DB::table('paciente')
-            ->select(
-            'paciente.id',
-            'paciente.nome',
-            'paciente.nacionalidade',
-            'paciente.rg',
-            'paciente.cpf',
-            'paciente.altura',
-            'paciente.peso',
-            'paciente.tipo_sanguineo',
-            'paciente.data_nascimento',
-            'paciente.alergias',
-            'paciente.created_at',
-            'paciente.updated_at')->paginate(15);
-
-            return response()->json($listPaciente, 200);
+            return response()->json($findPaciente, 200);
 
         } catch (Exception $err) {
-            dd($err);
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar paciente'], 500);
         }
     }
@@ -94,15 +68,18 @@ class PacienteController extends Controller
         $altura = $request->get('altura');
         $peso = $request->get('peso');
         $alergiasId = $request->get('alergiasId');
+        $medicamentosId = $request->get('medicamentosId');
+        $patologiasId = $request->get('patologiasId');
 
         try {
+            $this->alergiaService->checkExistsAlergiasId($alergiasId);
+            $this->medicamentoService->checkExistsMedicamentoId($medicamentosId);
+            $this->patologiaService->checkExistsPatologiaId($patologiasId);
 
-            $checkAlergiasId = $this->alergiaService->checkExistsAlergiasId($alergiasId);
-            if(is_string($checkAlergiasId)){
-                return response()->json(['Erro' => $checkAlergiasId], 404);
-            }
+            $alergias = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+            $medicamentos = $this->medicamentoService->findMedicamentosAndCreateObject($medicamentosId);
+            $patologias = $this->patologiaService->findPatologiasAndCreateObject($patologiasId);
 
-            $alergiasJson = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
 
             $newPaciente = new Paciente();
             $newPaciente->nome = $nome;
@@ -114,16 +91,29 @@ class PacienteController extends Controller
             $newPaciente->rg = $rg;
             $newPaciente->cpf = $cpf;
             $newPaciente->peso = $peso;
-            $newPaciente->alergias = json_encode($alergiasJson);
+            $newPaciente->alergias = $alergias;
+            $newPaciente->medicamentos = $medicamentos;
+            $newPaciente->patologias = $patologias;
             $newPaciente->save();
 
             return response()->json([
-                $newPaciente->getAttributes()
-        ], 200);
+                "id" => $newPaciente->id,
+                "nome" => $newPaciente->nome,
+                "nacionalidade" => $newPaciente->nacionalidade,
+                "data_nascimento" => $newPaciente->data_nascimento,
+                "sexo" => $newPaciente->sexo,
+                "tipo_sanguineo" => $newPaciente->tipo_sanguineo,
+                "altura" => $newPaciente->altura,
+                "rg" => $newPaciente->rg,
+                "cpf" => $newPaciente->cpf,
+                "peso" => $newPaciente->peso,
+                "alergias" => $newPaciente->alergias,
+                "medicamentos" => $newPaciente->medicamentos,
+                "patologias" => $newPaciente->patologias
+        ], 201);
 
         } catch (\Throwable $th) {
-            dd($th);
-            return response()->json($th, 400);
+            return response()->json(['Erro' => $th->getMessage()], 500);
         }
     }
 
@@ -138,17 +128,19 @@ class PacienteController extends Controller
         $altura = $request->get('altura');
         $peso = $request->get('peso');
         $alergiasId = $request->get('alergiasId');
-
+        $medicamentosId = $request->get('medicamentosId');
+        $patologiasId = $request->get('patologiasId');
 
         try{
             $findPacienteById = Paciente::where('id', $id)->first();
             if($findPacienteById){
-                $checkAlergiasId = $this->alergiaService->checkExistsAlergiasId($alergiasId);
-                if(is_string($checkAlergiasId)){
-                    return response()->json(['Erro' => $checkAlergiasId], 404);
-                }
+                $this->alergiaService->checkExistsAlergiasId($alergiasId);
+                $this->medicamentoService->checkExistsMedicamentoId($medicamentosId);
+                $this->patologiaService->checkExistsPatologiaId($patologiasId);
 
-                $alergiasObj = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+                $alergias = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
+                $medicamentos = $this->medicamentoService->findMedicamentosAndCreateObject($medicamentosId);
+                $patologias = $this->patologiaService->findPatologiasAndCreateObject($patologiasId);
 
                 $findPacienteById->nome = $nome;
                 $findPacienteById->nacionalidade = $nacionalidade;
@@ -159,25 +151,24 @@ class PacienteController extends Controller
                 $findPacienteById->tipo_sanguineo = $tipoSanguineo;
                 $findPacienteById->altura = $altura;
                 $findPacienteById->peso = $peso;
-                $findPacienteById->alergias = serialize($alergiasObj);
+                $findPacienteById->alergias = $alergias;
+                $findPacienteById->medicamentos = $medicamentos;
+                $findPacienteById->patologias = $patologias;
                 $findPacienteById->save();
 
-
                 return response()->json([
-                'id' => $findPacienteById->id,
-                'nome' => $findPacienteById->nome,
-                'nacionalidade' => $findPacienteById->nacionalidade,
-                'sexo' => $findPacienteById->sexo,
-                'data_nascimento'=> $findPacienteById->data_nascimento,
-                'tipo_sanguineo' => $findPacienteById->tipo_sanguineo,
-                'altura' => $findPacienteById->altura,
-                'peso' => $findPacienteById->peso,
-                'rg' => $findPacienteById->rg,
-                'cpf' => $findPacienteById->cpf,
-                'peso' => $findPacienteById->peso,
-                'alergias' => unserialize($findPacienteById->alergias),
-                'created_at' => $findPacienteById->created_at,
-                'updated_at' => $findPacienteById->updated_at
+                    $findPacienteById->id,
+                    $findPacienteById->nacionalidade,
+                    $findPacienteById->sexo,
+                    $findPacienteById->data_nascimento,
+                    $findPacienteById->rg = $rg,
+                    $findPacienteById->cpf = $cpf,
+                    $findPacienteById->tipo_sanguineo,
+                    $findPacienteById->altura = $altura,
+                    $findPacienteById->peso = $peso,
+                    $findPacienteById->alergias,
+                    $findPacienteById->medicamentos,
+                    $findPacienteById->patologias
             ], 200);
             }
 
@@ -185,8 +176,8 @@ class PacienteController extends Controller
                 return response()->json(['Erro' => 'Id paciente informado não encontrado'], 404);
             }
 
-        }catch(Exception $err){
-            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao atualizar paciente'], 500);
+        }catch(\Throwable $th){
+            return response()->json(['Erro' => $th->getMessage()], $th->getCode());
         }
     }
 }

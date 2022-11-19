@@ -13,32 +13,48 @@ class AlergiaService
     //     $this->digisac = $digisacFun;
     // }
 
-    public function checkExistsAlergiasId($alergiaIds)
+    public function checkExistsAlergiasId($ids)
     {
-        foreach($alergiaIds as $alergiaId){
-            $findAlergiasById = Alergias::where('id', $alergiaId)->first();
-            if(!$findAlergiasById){
-                return ('ID ' . $alergiaId . " não encontrado");
+
+        if(!empty($ids)){
+            foreach($ids as $alergiaId){
+                $findAlergiasById = Alergias::where('id', $alergiaId)->first();
+                if(!$findAlergiasById){
+                    throw new \Exception('ID alergia: ' . $alergiaId . ' não encontrado', 404);
+                }
+                return true;
             }
         }
 
+        return null;
     }
 
-    public function findAlergiasAndCreateObject($alergiaIds)
+    public function findAlergiasAndCreateObject($ids)
     {
-        $alergiaObj = array();
-        foreach($alergiaIds as $alergiaId){
-            $findAlergia = Alergias::where('id', $alergiaId)->first();
-            $arr = array(
-                'id' => $alergiaId,
-                'nome' => $findAlergia->nome,
-                'tipo_alergia' => $findAlergia->tipo
-            );
 
-            array_push($alergiaObj, $arr);
+        if(!empty($ids)){
+
+            $alergiaObj = array();
+            foreach($ids as $alergiaId){
+
+                $findAlergia = Alergias::where('id', $alergiaId)->first();
+                $arr = array(
+                    'id' => $alergiaId,
+                    'nome' => $findAlergia->nome,
+                    'tipo_alergia' => $findAlergia->tipo
+                );
+
+                array_push($alergiaObj, $arr);
+            }
+
+            return $alergiaObj;
         }
 
-        return $alergiaObj;
+        if(empty($ids)){
+            return null;
+
+        }
+
 
     }
 

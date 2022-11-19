@@ -11,9 +11,34 @@ class Paciente extends Model
 
     public $table = 'paciente';
 
-    protected $casts = [
-        'alergias' => 'array'
-    ];
+    public function getAlergiasAttribute($value)
+    {
+        return json_decode($value);
+    }
 
+    public function setAlergiasAttribute($value)
+    {
+        $this->attributes['alergias'] = json_encode($value);
+    }
+
+    public function getMedicamentosAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setMedicamentosAttribute($value)
+    {
+        $this->attributes['medicamentos'] = json_encode($value);
+    }
+
+    public function getPatologiasAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setPatologiasAttribute($value)
+    {
+        $this->attributes['patologias'] = json_encode($value);
+    }
 
 }
