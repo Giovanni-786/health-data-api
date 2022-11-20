@@ -29,6 +29,6 @@ class CreateTableMedicamentosControlados extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_medicamentos_controlados');
+        Schema::dropIfExists('medicamentos_controlados');
     }
 }

@@ -10,7 +10,7 @@ use App\Services\MedicamentoService;
 use App\Services\PatologiaService;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+
 
 
 class PacienteController extends Controller
@@ -79,7 +79,6 @@ class PacienteController extends Controller
             $alergias = $this->alergiaService->findAlergiasAndCreateObject($alergiasId);
             $medicamentos = $this->medicamentoService->findMedicamentosAndCreateObject($medicamentosId);
             $patologias = $this->patologiaService->findPatologiasAndCreateObject($patologiasId);
-
 
             $newPaciente = new Paciente();
             $newPaciente->nome = $nome;

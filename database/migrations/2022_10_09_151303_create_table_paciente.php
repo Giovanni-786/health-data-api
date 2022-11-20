@@ -38,6 +38,6 @@ class CreateTablePaciente extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_paciente');
+        Schema::dropIfExists('paciente');
     }
 }

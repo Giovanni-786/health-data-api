@@ -30,6 +30,12 @@ Route::put('pacientes/{id}', 'PacienteController@update');
 Route::get('pacientes', 'PacienteController@indexAll');
 Route::get('pacientes/{id}', 'PacienteController@indexById');
 
+//ROTA DE MEDICOS
+Route::post('medicos', 'MedicoController@store');
+Route::put('medicos/{id}', 'MedicoController@update');
+Route::get('medicos', 'MedicoController@indexAll');
+Route::get('medicos/{id}', 'MedicoController@indexById');
+
 //PATOLOGIAS
 Route::post('patologias', 'PatologiasController@store');
 Route::put('patologias/{id}', 'PatologiasController@update');
@@ -47,3 +53,9 @@ Route::post('medicamentos', 'MedicamentosController@store');
 Route::put('medicamentos/{id}', 'MedicamentosController@update');
 Route::get('medicamentos', 'MedicamentosController@indexAll');
 Route::get('medicamentos/{id}', 'MedicamentosController@indexById');
+
+//ROTA DE ESPECIALIDADES
+Route::post('especialidades', 'EspecialidadeController@store');
+Route::put('especialidades/{id}', 'EspecialidadeController@update');
+Route::get('especialidades', 'EspecialidadeController@indexAll');
+Route::get('especialidades/{id}', 'EspecialidadeController@indexById');

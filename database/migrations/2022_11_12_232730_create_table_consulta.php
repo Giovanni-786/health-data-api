@@ -26,6 +26,6 @@ class CreateTableConsulta extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_consulta');
+        Schema::dropIfExists('consulta');
     }
 }

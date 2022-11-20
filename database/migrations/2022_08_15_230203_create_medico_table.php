@@ -17,8 +17,9 @@ class CreateMedicoTable extends Migration
             $table->id();
             $table->string('nome');
             $table->string('sexo')->nullable();
-            $table->string('crm')->nullable();
+            $table->string('crm');
             $table->timestamp('data_nascimento')->nullable();
+            $table->mediumText('especialidades')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateMedicoTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pessoa');
+        Schema::dropIfExists('medico');
     }
 }
