@@ -15,7 +15,17 @@ class CreateTableConsulta extends Migration
     {
         Schema::create('consulta', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_paciente')->nullable();
+            $table->unsignedBigInteger('id_medico')->nullable();
+            $table->unsignedBigInteger('id_unidade')->nullable();
+            $table->date('data_consulta')->nullable();
+            $table->string('tipo_consulta')->nullable();
+            $table->mediumText('observacoes')->nullable();
             $table->timestamps();
+
+            $table->foreign('id_paciente')->references('id')->on('paciente');
+            $table->foreign('id_medico')->references('id')->on('medico');
+            $table->foreign('id_unidade')->references('id')->on('unidade');
         });
     }
 
