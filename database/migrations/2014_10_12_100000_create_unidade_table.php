@@ -18,7 +18,7 @@ class CreateUnidadeTable extends Migration
             $table->string('nome');
             $table->string('razao_social');
             $table->string('cnpj');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamps();
         });
     }
 

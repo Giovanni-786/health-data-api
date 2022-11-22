@@ -24,6 +24,12 @@ Route::put('funcionarios/{id}', 'FuncionarioController@update');
 Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
 Route::get('funcionarios', 'FuncionarioController@indexAll');
 
+//ROTA DE UNIDADES
+Route::post('unidades', 'UnidadeController@store');
+Route::put('unidades/{id}', 'UnidadeController@update');
+Route::get('unidades/{id}', 'UnidadeController@indexById');
+Route::get('unidades', 'UnidadeController@indexAll');
+
 //ROTA DE PACIENTES
 Route::post('pacientes', 'PacienteController@store');
 Route::put('pacientes/{id}', 'PacienteController@update');
