@@ -54,9 +54,7 @@ class MedicoController extends Controller
         $especialidadesId = $request->get('especialidadesId');
 
         try{
-
             $this->especialidadeService->checkExistsEspecialidadeId($especialidadesId);
-
             $especialidades = $this->especialidadeService->findEspecialidadeAndCreateObject($especialidadesId);
 
             $newMedico = new Medico();
@@ -79,38 +77,51 @@ class MedicoController extends Controller
             ]);
 
         }catch(Exception $err){
-            dd($err);
-            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar medico'], 500);
+
+            return response()->json(['Erro' => $err->getMessage()], 500);
         }
     }
 
-    // public function update(Request $request, $id){
-    //     $nome = $request->get('nome');
-    //     $tipoAlergia = $request->get('tipo_alergia');
-    //     try{
-    //         $findAlergia = Alergias::where('id', $id)->first();
+    public function update(Request $request, $id){
+        $nome = $request->get('nome');
+        $sexo = $request->get('sexo');
+        $crm = $request->get('crm');
+        $dataNascimento = $request->get('data_nascimento');
+        $especialidadesId = $request->get('especialidadesId');
 
-    //         if(empty($findAlergia)){
-    //             return response()->json(['Erro' => 'Alergia não encontrada'], 404);
-    //         }
+        try{
+            $findMedico = Medico::where('id', $id)->first();
 
-    //         if($findAlergia){
-    //             $findAlergia->nome = $nome;
-    //             $findAlergia->tipo = $tipoAlergia;
-    //             $findAlergia->save();
+            if(empty($findMedico)){
+                return response()->json(['Erro' => 'Medico não encontrado'], 404);
+            }
 
-    //             return response()->json([
-    //                 'id' => $findAlergia->id,
-    //                 'nome' => $findAlergia->nome,
-    //                 'tipo' => $findAlergia->tipo,
-    //                 'created_at'=> $findAlergia->created_at,
-    //                 'updated_at'=> $findAlergia->updated_at
-    //             ]);
-    //         }
+            if($findMedico){
+                $this->especialidadeService->checkExistsEspecialidadeId($especialidadesId);
+                $especialidades = $this->especialidadeService->findEspecialidadeAndCreateObject($especialidadesId);
 
-    //     }catch(Exception $err){
+                $findMedico->nome = $nome;
+                $findMedico->sexo = $sexo;
+                $findMedico->crm = $crm;
+                $findMedico->data_nascimento = $dataNascimento;
+                $findMedico->especialidades = $especialidades;
+                $findMedico->save();
 
-    //         return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar alergia'], 500);
-    //     }
-    // }
+                return response()->json([
+                    'id' => $findMedico->id,
+                    'nome' => $findMedico->nome,
+                    'sexo' => $findMedico->sexo,
+                    'crm' => $findMedico->crm,
+                    'data_nascimento' => $findMedico->data_nascimento,
+                    'especialidades' => $findMedico->especialidades,
+                    'created_at'=> $findMedico->created_at,
+                    'updated_at'=> $findMedico->updated_at
+                ]);
+            }
+
+        }catch(Exception $err){
+
+            return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar medico'], 500);
+        }
+    }
 }

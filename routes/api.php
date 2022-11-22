@@ -65,3 +65,9 @@ Route::post('especialidades', 'EspecialidadeController@store');
 Route::put('especialidades/{id}', 'EspecialidadeController@update');
 Route::get('especialidades', 'EspecialidadeController@indexAll');
 Route::get('especialidades/{id}', 'EspecialidadeController@indexById');
+
+//ROTA DE CONSULTAS
+Route::post('consultas', 'ConsultaController@store');
+Route::put('consultas/{id}', 'ConsultaController@update');
+Route::get('consultas', 'ConsultaController@indexAll');
+Route::get('consultas/{id}', 'ConsultaController@indexById');
