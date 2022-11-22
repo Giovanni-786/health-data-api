@@ -12,7 +12,29 @@ class ConsultaController extends Controller
     public function indexById(Request $request, $id){
         try{
             //fazer inner join
-            $findConsulta = Consulta::where('id', $id)->first();
+            $findConsulta = DB::table('consulta')
+            ->join('paciente', 'consulta.id_paciente', '=', 'paciente.id')
+            ->join('medico', 'consulta.id_medico', '=', 'medico.id')
+            ->join('unidade', 'consulta.id_unidade', '=', 'unidade.id')
+            ->select(
+                'consulta.id as consulta_id',
+                'paciente.nome as paciente_nome',
+                'paciente.sexo as paciente_sexo',
+                'paciente.data_nascimento as paciente_data_nascimento',
+                'paciente.tipo_sanguineo as paciente_tipo_sanguineo',
+                'paciente.altura as paciente_altura',
+                'paciente.peso as paciente_peso',
+                'paciente.sexo as paciente_sexo',
+                'medico.id as medico_id',
+                'medico.nome as medico_nome',
+                'medico.crm as medico_crm',
+                'unidade.id as unidade_id',
+                'unidade.nome as unidade_nome',
+                'consulta.observacoes as consulta_observacoes',
+                'consulta.data_consulta as data_consulta',
+                'consulta.created_at',
+                'consulta.updated_at')
+                ->where('consulta.id', $id)->first();
 
             if(empty($findConsulta)){
                 return response()->json(['Erro' => 'Consulta não encontrada'], 404);
@@ -30,18 +52,34 @@ class ConsultaController extends Controller
         try{
             //FAZER INNER JOIN
             $listConsulta = DB::table('consulta')
+            ->join('paciente', 'consulta.id_paciente', '=', 'paciente.id')
+            ->join('medico', 'consulta.id_medico', '=', 'medico.id')
+            ->join('unidade', 'consulta.id_unidade', '=', 'unidade.id')
             ->select(
-                'id_paciente',
-                'id_medico',
-                'id_unidade',
-                'data_consulta',
-                'created_at',
-                'updated_at')
+                'consulta.id as consulta_id',
+                'paciente.nome as paciente_nome',
+                'paciente.sexo as paciente_sexo',
+                'paciente.data_nascimento as paciente_data_nascimento',
+                'paciente.tipo_sanguineo as paciente_tipo_sanguineo',
+                'paciente.altura as paciente_altura',
+                'paciente.peso as paciente_peso',
+                'paciente.sexo as paciente_sexo',
+                'medico.id as medico_id',
+                'medico.nome as medico_nome',
+                'medico.crm as medico_crm',
+                'unidade.id as unidade_id',
+                'unidade.nome as unidade_nome',
+                'consulta.observacoes as consulta_observacoes',
+                'consulta.data_consulta as data_consulta',
+                'consulta.created_at',
+                'consulta.updated_at')
                 ->paginate($perPage ?? 15);
+
 
             return response()->json($listConsulta, 200);
 
         }catch(Exception $err){
+
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao listar consulta.'], 500);
         }
     }
