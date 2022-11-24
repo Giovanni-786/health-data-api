@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\Api\LoginController;
+use App\Http\Controllers\Auth\Api\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,15 +16,29 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('funcionarios', 'FuncionarioController@indexAll');
+
+});
+
+Route::prefix('auth')->group(function(){
+    Route::post('login', [LoginController::class, 'login']);
+
+    Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
+
+    Route::post('register', [RegisterController::class, 'register']);
+
 });
 
 //ROTA DE FUNCIONÁRIOS
 Route::post('funcionarios', 'FuncionarioController@store');
 Route::put('funcionarios/{id}', 'FuncionarioController@update');
 Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
-Route::get('funcionarios', 'FuncionarioController@indexAll');
 
 //ROTA DE UNIDADES
 Route::post('unidades', 'UnidadeController@store');
