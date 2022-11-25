@@ -17,8 +17,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'cargo', 'crm', 'especialidades',
     ];
+
 
     /**
      * The attributes that should be hidden for arrays.
@@ -37,4 +38,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getEspecialidadesAttribute($value)
+    {
+        return json_decode($value);
+    }
+
+    public function setEspecialidadesAttribute($value)
+    {
+        $this->attributes['especialidades'] = json_encode($value);
+    }
 }
