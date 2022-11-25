@@ -9,8 +9,10 @@ use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     public function register(Request $request, User $user){
-        //TO-DO: validar request
+
         $userData = $request->only('name', 'email', 'password');
+
+
         $userData['password'] = bcrypt($userData['password']);
 
         if(!$user = $user->create($userData)){

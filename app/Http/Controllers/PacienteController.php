@@ -10,8 +10,7 @@ use App\Services\MedicamentoService;
 use App\Services\PatologiaService;
 use Exception;
 use Illuminate\Http\Request;
-
-
+use Laravel\Sanctum\PersonalAccessToken;
 
 class PacienteController extends Controller
 {
@@ -25,6 +24,7 @@ class PacienteController extends Controller
 
     public function indexAll(Request $request)
     {
+
         $perPage = $request->get('perPage');
 
         try {

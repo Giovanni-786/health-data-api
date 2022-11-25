@@ -21,21 +21,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('funcionarios', 'FuncionarioController@indexAll');
-
+Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
+    Route::get('pacientes', 'PacienteController@indexAll');
 });
 
 Route::prefix('auth')->group(function(){
     Route::post('login', [LoginController::class, 'login']);
-
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-
     Route::post('register', [RegisterController::class, 'register']);
-
 });
 
 //ROTA DE FUNCIONÁRIOS
+Route::get('funcionarios', 'FuncionarioController@indexAll');
 Route::post('funcionarios', 'FuncionarioController@store');
 Route::put('funcionarios/{id}', 'FuncionarioController@update');
 Route::get('funcionarios/{id}', 'FuncionarioController@indexById');
@@ -49,7 +46,7 @@ Route::get('unidades', 'UnidadeController@indexAll');
 //ROTA DE PACIENTES
 Route::post('pacientes', 'PacienteController@store');
 Route::put('pacientes/{id}', 'PacienteController@update');
-Route::get('pacientes', 'PacienteController@indexAll');
+
 Route::get('pacientes/{id}', 'PacienteController@indexById');
 
 //ROTA DE MEDICOS
