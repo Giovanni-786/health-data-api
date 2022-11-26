@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consulta;
+use App\Services\ConsultaService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
+    public function __construct(ConsultaService $consultaService)
+    {
+        $this->consultaService = $consultaService;
+    }
     public function indexById(Request $request, $id){
         try{
             //fazer inner join

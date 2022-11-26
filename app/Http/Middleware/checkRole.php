@@ -29,7 +29,7 @@ class checkRole
                 }
             }
             if($request->getPathInfo() == '/api/medicos' ){
-                if($request->getMethod() != 'GET'){
+                if($request->getMethod() == 'DELETE'){
                     return response()->json(['erro'=>'não autorizado'], 403);
                 }
             }

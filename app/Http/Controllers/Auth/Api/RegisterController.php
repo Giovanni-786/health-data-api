@@ -27,7 +27,7 @@ class RegisterController extends Controller
             //caso for medico, id_medico é obrigatório.
             if($cargo == 'medico'){
                 if(empty($id_medico)){
-                    return response()->json(['Erro' => 'campo id_medico é obrigatório'], 400);
+                    return response()->json(['Erro' => 'campo id_medico é obrigatório caso o cargo seja medico'], 400);
                 }
             }
 
@@ -48,7 +48,7 @@ class RegisterController extends Controller
             ]);
 
         }catch(QueryException $err){
-            dd($err);
+
             if(isset($err->errorInfo[2]) &&  $err->errorInfo[2] == "Data truncated for column 'cargo' at row 1"){
                 return response()->json(['erro'=>"cargo aceita apenas os valores: 'medico', 'assistente', 'atendente'"], 400);
             }

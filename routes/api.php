@@ -66,7 +66,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::get('especialidades/{id}', 'EspecialidadeController@indexById');
 
     //ROTA DE CONSULTAS
-    Route::post('consultas', 'ConsultaController@store');
+    Route::post('consultas', 'ConsultaController@store')->middleware('check.consulta');
     Route::put('consultas/{id}', 'ConsultaController@update');
     Route::get('consultas', 'ConsultaController@indexAll');
     Route::get('consultas/{id}', 'ConsultaController@indexById');
