@@ -25,40 +25,40 @@ class checkRole
         if($user->cargo == 'medico'){
             if($request->getPathInfo() == '/api/alergias' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/medicos' ){
                 if($request->getMethod() == 'DELETE'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/especialidades' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/medicamentos' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/patologias' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/unidades' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/unidades' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
         }
@@ -66,46 +66,46 @@ class checkRole
         if($user->cargo == 'assistente'){
             if($request->getPathInfo() == '/api/alergias' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/medicos' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/especialidades' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
             if($request->getPathInfo() == '/api/medicamentos' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/patologias' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/consultas' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/pacientes' ){
                 if($request->getMethod() == 'DELETE'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
             if($request->getPathInfo() == '/api/user' ){
                 if($request->getMethod() != 'GET'){
-                    return response()->json(['erro'=>'não autorizado'], 403);
+                    return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
