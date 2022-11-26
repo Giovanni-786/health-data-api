@@ -15,9 +15,102 @@ class checkRole
      */
     public function handle($request, Closure $next)
     {
-        //obter o nivel de permissão dele e validar a request.
-        // $user =  auth('sanctum')->user();
-        // dd($user);
+        //se o cargo for medico, validar as requests
+        $user =  auth('sanctum')->user();
+
+        if($user->is_admin){
+            return $next($request);
+        }
+
+        if($user->cargo == 'medico'){
+            if($request->getPathInfo() == '/api/alergias' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/medicos' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/especialidades' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/medicamentos' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/patologias' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/unidades' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/unidades' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+        }
+
+        if($user->cargo == 'assistente'){
+            if($request->getPathInfo() == '/api/alergias' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/medicos' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/especialidades' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+            if($request->getPathInfo() == '/api/medicamentos' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/patologias' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/consultas' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/pacientes' ){
+                if($request->getMethod() == 'DELETE'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+            if($request->getPathInfo() == '/api/user' ){
+                if($request->getMethod() != 'GET'){
+                    return response()->json(['erro'=>'não autorizado'], 403);
+                }
+            }
+
+        }
+
         return $next($request);
     }
 }
