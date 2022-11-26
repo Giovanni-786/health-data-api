@@ -20,10 +20,8 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false); //acesso a tudo.
-            $table->enum('cargo', ['medico', 'assistente', 'atendente'])->default('assistente');
-            $table->string('crm')->nullable();
-            $table->mediumText('especialidades')->nullable();
-            $table->rememberToken();
+            $table->enum('cargo', ['medico', 'assistente'])->default('assistente');
+            $table->uuid('id_medico')->nullable();
             $table->timestamps();
         });
     }
