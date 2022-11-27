@@ -9,15 +9,15 @@ class AlergiaFilterService
 {
 
 
-    public function filterByName($filters)
+    public function filterByName($filter)
     {
-        if(isset($filters['nome'])){
-            $listAlergias = DB::table('alergias')
-            ->where('nome', '=', $filters['nome'])
-            ->orWhere('nome', 'like', '%' . $filters['nome'] . '%')
+        if(isset($filter['nome'])){
+            $query = DB::table('alergias')
+            ->where('nome', '=', $filter['nome'])
+            ->orWhere('nome', 'like', '%' . $filter['nome'] . '%')
             ->paginate($perPage ?? 15);
 
-            return $listAlergias;
+            return $query;
         }
     }
 

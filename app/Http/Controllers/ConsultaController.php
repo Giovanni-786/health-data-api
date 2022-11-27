@@ -4,15 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulta;
 use App\Services\ConsultaService;
+use App\Services\Filters\ConsultaFilterService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ConsultaController extends Controller
 {
-    public function __construct(ConsultaService $consultaService)
+    public function __construct(ConsultaService $consultaService, ConsultaFilterService $consultaFilterService)
     {
         $this->consultaService = $consultaService;
+        $this->consultaFilterService = $consultaFilterService;
     }
     public function indexById(Request $request, $id){
         try{
@@ -54,8 +56,15 @@ class ConsultaController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
+        $filter = $request->get('filter');
+
         try{
-            //FAZER INNER JOIN
+
+            if(!empty($filter)){
+                $queryFilter = $this->consultaFilterService->filter($filter, $perPage);
+                 return response()->json($queryFilter, 200);
+             }
+
             $listConsulta = DB::table('consulta')
             ->join('paciente', 'consulta.id_paciente', '=', 'paciente.id')
             ->join('medico', 'consulta.id_medico', '=', 'medico.id')

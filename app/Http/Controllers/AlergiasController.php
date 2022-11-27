@@ -31,12 +31,13 @@ class AlergiasController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
-        $filters = $request->get('filters');
+        $filter = $request->get('filter');
 
         try{
-            if(!empty($filters)){
-               $filters = $this->alergiaFilterService->filterByName($filters);
-                return response()->json($filters, 200);
+            if(!empty($filter)){
+
+               $queryFilter = $this->alergiaFilterService->filterByName($filter);
+                return response()->json($queryFilter, 200);
             }
 
             $listAlergias = DB::table('alergias')
