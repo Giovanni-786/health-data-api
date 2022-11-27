@@ -34,7 +34,6 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::get('unidades/{id}', 'UnidadeController@indexById');
     Route::get('unidades', 'UnidadeController@indexAll');
 
-
     //ROTA DE MEDICOS
     Route::post('medicos', 'MedicoController@store');
     Route::put('medicos/{id}', 'MedicoController@update');
@@ -77,6 +76,4 @@ Route::prefix('auth')->group(function(){
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
     Route::post('register', [RegisterController::class, 'register']);
 });
-
-//ROTA DE FUNCIONÁRIOS
 

@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Alergias;
+use App\Services\Filters\AlergiaFilterService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class AlergiasController extends Controller
 {
+    public function __construct(AlergiaFilterService $alergiaFilterService)
+    {
+        $this->alergiaFilterService = $alergiaFilterService;
+    }
 
     public function indexById($id){
         try{
@@ -16,7 +21,7 @@ class AlergiasController extends Controller
             if(empty($findAlergia)){
                 return response()->json(['Erro' => 'Alergia não encontrada'], 404);
             }
-    
+
             return response()->json($findAlergia, 200);
 
         }catch(Exception $err){
@@ -26,7 +31,14 @@ class AlergiasController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
+        $filters = $request->get('filters');
+
         try{
+            if(!empty($filters)){
+               $filters = $this->alergiaFilterService->filterByName($filters);
+                return response()->json($filters, 200);
+            }
+
             $listAlergias = DB::table('alergias')
             ->select('alergias.id', 'alergias.nome', 'alergias.tipo', 'alergias.created_at', 'alergias.updated_at')
             ->paginate($perPage ?? 15);
@@ -41,7 +53,7 @@ class AlergiasController extends Controller
             return response()->json(['Erro' => 'ocorreu um erro inesperado ao listar alergias'], 500);
         }
     }
-    
+
     public function store(Request $request){
         $nome = $request->get('nome');
         $tipoAlergia = $request->get('tipo_alergia');
@@ -50,10 +62,10 @@ class AlergiasController extends Controller
             $newAlergia->nome = $nome;
             $newAlergia->tipo = $tipoAlergia;
             $newAlergia->save();
-            
+
             return response()->json([
-                'id' => $newAlergia->id, 
-                'nome' => $newAlergia->nome, 
+                'id' => $newAlergia->id,
+                'nome' => $newAlergia->nome,
                 'tipo' => $newAlergia->tipo,
                 'created_at'=> $newAlergia->created_at,
                 'updated_at'=> $newAlergia->updated_at
@@ -70,25 +82,25 @@ class AlergiasController extends Controller
         $tipoAlergia = $request->get('tipo_alergia');
         try{
             $findAlergia = Alergias::where('id', $id)->first();
-            
+
             if(empty($findAlergia)){
                 return response()->json(['Erro' => 'Alergia não encontrada'], 404);
             }
-            
+
             if($findAlergia){
                 $findAlergia->nome = $nome;
                 $findAlergia->tipo = $tipoAlergia;
                 $findAlergia->save();
 
                 return response()->json([
-                    'id' => $findAlergia->id, 
-                    'nome' => $findAlergia->nome, 
+                    'id' => $findAlergia->id,
+                    'nome' => $findAlergia->nome,
                     'tipo' => $findAlergia->tipo,
                     'created_at'=> $findAlergia->created_at,
                     'updated_at'=> $findAlergia->updated_at
                 ]);
-            }       
-        
+            }
+
         }catch(Exception $err){
 
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar alergia'], 500);
