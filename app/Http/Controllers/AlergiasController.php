@@ -35,8 +35,7 @@ class AlergiasController extends Controller
 
         try{
             if(!empty($filter)){
-
-               $queryFilter = $this->alergiaFilterService->filterByName($filter);
+               $queryFilter = $this->alergiaFilterService->filter($filter);
                 return response()->json($queryFilter, 200);
             }
 
