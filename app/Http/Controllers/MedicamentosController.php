@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicamentos;
+use App\Services\Filters\MedicamentoFilterService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MedicamentosController extends Controller
 {
+    public function __construct(MedicamentoFilterService $medicamentoFilterService)
+    {
+        $this->medicamentoFilterService = $medicamentoFilterService;
+    }
     public function indexById(Request $request, $id){
         try{
             $findMedicamento = Medicamentos::where('id', $id)->first();
@@ -26,7 +31,13 @@ class MedicamentosController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
+        $filter = $request->get('filter');
         try{
+            if(!empty($filter)){
+                $queryFilter = $this->medicamentoFilterService->filter($filter);
+                return response()->json($queryFilter, 200);
+            }
+
             $listMedicamentos = DB::table('medicamentos_controlados')
             ->select('nome', 'dosagem', 'unidade_medida', 'created_at', 'updated_at')
             ->paginate($perPage ?? 15);
