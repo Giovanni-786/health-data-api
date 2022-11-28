@@ -6,6 +6,7 @@ use App\Models\Alergias;
 use App\Models\Paciente;
 use App\Models\PacienteAlergia;
 use App\Services\AlergiaService;
+use App\Services\Filters\PacienteFilterService;
 use App\Services\MedicamentoService;
 use App\Services\PatologiaService;
 use Exception;
@@ -15,19 +16,25 @@ use Laravel\Sanctum\PersonalAccessToken;
 class PacienteController extends Controller
 {
 
-    public function __construct(AlergiaService $alergiaService, MedicamentoService $medicamentoService, PatologiaService $patologiaService)
+    public function __construct(AlergiaService $alergiaService, MedicamentoService $medicamentoService, PatologiaService $patologiaService, PacienteFilterService $pacienteFilterService)
     {
         $this->alergiaService = $alergiaService;
         $this->medicamentoService = $medicamentoService;
         $this->patologiaService = $patologiaService;
+        $this->pacienteFilterService = $pacienteFilterService;
     }
 
     public function indexAll(Request $request)
     {
 
         $perPage = $request->get('perPage');
-
+        $filter = $request->get('filter');
         try {
+            if(!empty($filter)){
+                $queryFilter = $this->pacienteFilterService->filter($filter, $perPage);
+                return response()->json($queryFilter, 200);
+            }
+
             $listPaciente = Paciente::paginate($perPage ?? 15);
 
             if(empty($listPaciente)){
@@ -156,18 +163,7 @@ class PacienteController extends Controller
                 $findPacienteById->save();
 
                 return response()->json([
-                    $findPacienteById->id,
-                    $findPacienteById->nacionalidade,
-                    $findPacienteById->sexo,
-                    $findPacienteById->data_nascimento,
-                    $findPacienteById->rg = $rg,
-                    $findPacienteById->cpf = $cpf,
-                    $findPacienteById->tipo_sanguineo,
-                    $findPacienteById->altura = $altura,
-                    $findPacienteById->peso = $peso,
-                    $findPacienteById->alergias,
-                    $findPacienteById->medicamentos,
-                    $findPacienteById->patologias
+                    $findPacienteById
             ], 200);
             }
 

@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Models\Especialidade;
 use App\Models\Medico;
 use App\Services\EspecialidadeService;
+use App\Services\Filters\MedicoFilterService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MedicoController extends Controller
 {
-    public function __construct(EspecialidadeService $especialidadeService)
+    public function __construct(EspecialidadeService $especialidadeService, MedicoFilterService $medicoFilterService)
     {
         $this->especialidadeService = $especialidadeService;
+        $this->medicoFilterService = $medicoFilterService;
     }
 
     public function indexById($id){
@@ -32,7 +34,13 @@ class MedicoController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
+        $filter = $request->get('filter');
         try{
+            if(!empty($filter)){
+                $queryFilter = $this->medicoFilterService->filter($filter, $perPage);
+                return response()->json($queryFilter, 200);
+            }
+
             $listMedicos = Medico::paginate($perPage ?? 15);
 
             if(empty($listMedicos)){
