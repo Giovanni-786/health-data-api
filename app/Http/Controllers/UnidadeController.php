@@ -3,12 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\Unidade;
+use App\Services\Filters\UnidadeFilterService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class UnidadeController extends Controller
 {
+    public function __construct(UnidadeFilterService $unidadeFilterService)
+    {
+        $this->unidadeFilterService = $unidadeFilterService;
+    }
+
     public function indexById(Request $request, $id){
         try{
             $findUnidade = Unidade::where('id', $id)->first();
@@ -26,7 +32,12 @@ class UnidadeController extends Controller
 
     public function indexAll(Request $request){
         $perPage = $request->get('perPage');
+        $filter = $request->get('filter');
         try{
+            if(!empty($filter)){
+                $queryFilter = $this->unidadeFilterService->filter($filter, $perPage);
+                return response()->json($queryFilter, 200);
+            }
             $listUnidade = DB::table('unidade')
             ->select(
                 'nome',
