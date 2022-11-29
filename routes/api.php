@@ -70,6 +70,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::put('consultas/{id}', 'ConsultaController@update');
     Route::get('consultas', 'ConsultaController@indexAll');
     Route::get('consultas/{id}', 'ConsultaController@indexById');
+    Route::delete('consultas/{id}', 'ConsultaController@delete');
 });
 
 Route::prefix('auth')->group(function(){

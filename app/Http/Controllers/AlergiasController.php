@@ -122,7 +122,5 @@ class AlergiasController extends Controller
         }catch(QueryException $err){
             return response()->json(['data'=>'ocorreu um erro inesperado ao excluir registro'], 500);
         }
-
-
     }
 }
