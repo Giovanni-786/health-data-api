@@ -31,14 +31,15 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
 
     //ROTA DE UNIDADES
     Route::post('unidades', 'UnidadeController@store');
+    Route::get('unidades', 'UnidadeController@indexAll');
     Route::put('unidades/{id}', 'UnidadeController@update');
     Route::get('unidades/{id}', 'UnidadeController@indexById');
-    Route::get('unidades', 'UnidadeController@indexAll');
+    Route::delete('unidades/{id}', 'UnidadeController@delete');
 
     //ROTA DE MEDICOS
     Route::post('medicos', 'MedicoController@store');
-    Route::put('medicos/{id}', 'MedicoController@update');
     Route::get('medicos', 'MedicoController@indexAll');
+    Route::put('medicos/{id}', 'MedicoController@update');
     Route::get('medicos/{id}', 'MedicoController@indexById');
     Route::delete('medicos/{id}', 'MedicoController@delete');
 
@@ -47,6 +48,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::put('patologias/{id}', 'PatologiasController@update');
     Route::get('patologias', 'PatologiasController@indexAll');
     Route::get('patologias/{id}', 'PatologiasController@indexById');
+    Route::delete('patologias/{id}', 'PatologiasController@delete');
 
     //ALERGIAS
     Route::post('alergias', 'AlergiasController@store');
