@@ -27,6 +27,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::post('pacientes', 'PacienteController@store');
     Route::put('pacientes/{id}', 'PacienteController@update');
     Route::get('pacientes/{id}', 'PacienteController@indexById');
+    Route::delete('pacientes/{id}', 'PacienteController@delete');
 
     //ROTA DE UNIDADES
     Route::post('unidades', 'UnidadeController@store');
