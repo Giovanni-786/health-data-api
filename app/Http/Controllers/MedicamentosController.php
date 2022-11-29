@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Medicamentos;
 use App\Services\Filters\MedicamentoFilterService;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -97,6 +98,21 @@ class MedicamentosController extends Controller
 
         }catch(Exception $err){
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar medicamento'], 500);
+        }
+    }
+
+    public function delete($id){
+        try{
+
+            $delete = Medicamentos::where('id', $id)->delete();
+            if($delete == 1){
+                return response()->json(['data'=>'registro excluído com sucesso'], 204);
+            }
+            if($delete == 0){
+                return response()->json(['data'=>'registro não encontrado'], 404);
+            }
+        }catch(QueryException $err){
+            return response()->json(['data'=>'ocorreu um erro inesperado ao excluir registro'], 500);
         }
     }
 }

@@ -58,6 +58,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::put('medicamentos/{id}', 'MedicamentosController@update');
     Route::get('medicamentos', 'MedicamentosController@indexAll');
     Route::get('medicamentos/{id}', 'MedicamentosController@indexById');
+    Route::delete('medicamentos/{id}', 'MedicamentosController@delete');
 
     //ROTA DE ESPECIALIDADES
     Route::post('especialidades', 'EspecialidadeController@store');
