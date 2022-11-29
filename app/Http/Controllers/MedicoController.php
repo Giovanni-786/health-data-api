@@ -7,6 +7,7 @@ use App\Models\Medico;
 use App\Services\EspecialidadeService;
 use App\Services\Filters\MedicoFilterService;
 use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -130,6 +131,21 @@ class MedicoController extends Controller
         }catch(Exception $err){
 
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar medico'], 500);
+        }
+    }
+
+    public function delete($id){
+        try{
+
+            $delete = Medico::where('id', $id)->delete();
+            if($delete == 1){
+                return response()->json(['data'=>'registro excluído com sucesso'], 204);
+            }
+            if($delete == 0){
+                return response()->json(['data'=>'registro não encontrado'], 404);
+            }
+        }catch(QueryException $err){
+            return response()->json(['data'=>'ocorreu um erro inesperado ao excluir registro'], 500);
         }
     }
 }
