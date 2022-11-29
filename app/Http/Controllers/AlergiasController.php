@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Alergias;
 use App\Services\Filters\AlergiaFilterService;
 use Exception;
+use Facade\Ignition\QueryRecorder\Query;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -105,5 +107,22 @@ class AlergiasController extends Controller
 
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar alergia'], 500);
         }
+    }
+
+    public function delete($id){
+        try{
+
+            $delete = Alergias::where('id', $id)->delete();
+            if($delete == 1){
+                return response()->json(['data'=>'registro excluído com sucesso'], 204);
+            }
+            if($delete == 0){
+                return response()->json(['data'=>'registro não encontrado'], 404);
+            }
+        }catch(QueryException $err){
+            return response()->json(['data'=>'ocorreu um erro inesperado ao excluir registro'], 500);
+        }
+
+
     }
 }

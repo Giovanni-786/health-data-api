@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::put('alergias/{id}', 'AlergiasController@update');
     Route::get('alergias', 'AlergiasController@indexAll');
     Route::get('alergias/{id}', 'AlergiasController@indexById');
+    Route::delete('alergias/{id}', 'AlergiasController@delete');
 
     //ROTA DE MEDICAMENTOS
     Route::post('medicamentos', 'MedicamentosController@store');
