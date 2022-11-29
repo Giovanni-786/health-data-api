@@ -39,7 +39,7 @@ class PatologiasController extends Controller
                 $queryFilter = $this->patologiaFilterService->filter($filter, $perPage);
                 return response()->json($queryFilter, 200);
             }
-            $listPatologias = DB::table('patologias')->select('nome', 'tipo', 'created_at', 'updated_at')->paginate($perPage ?? 15);
+            $listPatologias = DB::table('patologias')->select('id', 'nome', 'tipo', 'created_at', 'updated_at')->paginate($perPage ?? 15);
             return response()->json($listPatologias, 200);
 
         }catch(Exception $err){
