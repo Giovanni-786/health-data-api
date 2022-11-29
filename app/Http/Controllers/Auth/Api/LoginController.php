@@ -14,11 +14,15 @@ class LoginController extends Controller
         if(!auth()->attempt($credentials)){
             return response()->json(['Erro' => 'Credenciais inválidas'], 401);
         }
+        $user =  auth('sanctum')->user();
 
         $token = auth()->user()->createToken('auth_token');
         return response()->json([
             'data' => [
-                'token' => $token->plainTextToken
+                'user_name' => $user->name,
+                'user_email' => $user->email,
+                'user_cargo' => $user->cargo,
+                'token' => $token->plainTextToken,
             ]
         ]);
     }
