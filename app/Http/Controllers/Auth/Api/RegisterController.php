@@ -32,7 +32,6 @@ class RegisterController extends Controller
             }
 
             $password = bcrypt($password);
-
             $createUser = new User();
             $createUser->name = $name;
             $createUser->email = $email;

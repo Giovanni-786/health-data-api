@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateUsersTable extends Migration
@@ -20,10 +21,21 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->boolean('is_admin')->default(false); //acesso a tudo.
-            $table->enum('cargo', ['medico', 'assistente'])->nullable();
+            $table->enum('cargo', ['medico', 'assistente', 'admin'])->nullable();
+            $table->uuid('id_unidade')->nullable();
             $table->uuid('id_medico')->nullable();
             $table->timestamps();
         });
+
+        DB::table('users')->insert(
+            array(
+                'name' => 'SuperAdmin',
+                'email' => 'admin@gmail.com.br',
+                'password' => bcrypt('1234'),
+                'is_admin' => true,
+                'cargo' => 'admin'
+            )
+        );
     }
 
     /**
