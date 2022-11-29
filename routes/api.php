@@ -64,6 +64,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::put('especialidades/{id}', 'EspecialidadeController@update');
     Route::get('especialidades', 'EspecialidadeController@indexAll');
     Route::get('especialidades/{id}', 'EspecialidadeController@indexById');
+    Route::delete('especialidades/{id}', 'EspecialidadeController@delete');
 
     //ROTA DE CONSULTAS
     Route::post('consultas', 'ConsultaController@store')->middleware('check.consulta');
