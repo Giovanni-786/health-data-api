@@ -40,7 +40,7 @@ class MedicamentosController extends Controller
             }
 
             $listMedicamentos = DB::table('medicamentos_controlados')
-            ->select('nome', 'dosagem', 'unidade_medida', 'created_at', 'updated_at')
+            ->select('id', 'nome', 'dosagem', 'unidade_medida', 'created_at', 'updated_at')
             ->paginate($perPage ?? 15);
             return response()->json($listMedicamentos, 200);
 

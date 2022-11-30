@@ -41,6 +41,7 @@ class UnidadeController extends Controller
             }
             $listUnidade = DB::table('unidade')
             ->select(
+                'id',
                 'nome',
                 'razao_social',
                 'cnpj',
@@ -91,7 +92,7 @@ class UnidadeController extends Controller
             $findUnidade->cnpj = $cnpj;
             $findUnidade->save();
 
-            return response()->json($findUnidade->getAttributes() ,200);
+            return response()->json($findUnidade, 200);
 
         }catch(Exception $err){
             return response()->json(['Erro' => 'Ocorreu um erro inesperado ao salvar unidade'], 500);
