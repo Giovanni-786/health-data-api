@@ -38,13 +38,13 @@ class checkRole
                     return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
-            if($request->getPathInfo() == '/api/medicamentos' ){
+            if($request->getPathInfo() == '/api/medicamentos'){
                 if($request->getMethod() != 'GET'){
                     return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
 
-            if($request->getPathInfo() == '/api/patologias' ){
+            if($request->getPathInfo() == '/api/patologias'){
                 if($request->getMethod() != 'GET'){
                     return response()->json(['data'=>'não autorizado'], 403);
                 }

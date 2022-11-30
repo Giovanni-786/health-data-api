@@ -34,6 +34,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_paciente', '=', $filters['id_paciente'])
@@ -65,6 +66,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_paciente', '=', $filters['id_paciente'])
@@ -97,6 +99,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_paciente', '=', $filters['id_paciente'])
@@ -130,6 +133,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_paciente', '=', $filters['id_paciente'])
@@ -164,6 +168,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_medico', '=', $filters['id_medico'])
@@ -195,6 +200,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_medico', '=', $filters['id_medico'])
@@ -227,6 +233,7 @@ class ConsultaFilterService
                 'unidade.nome as unidade_nome',
                 'consulta.observacoes as consulta_observacoes',
                 'consulta.data_consulta as data_consulta',
+                'consulta.tipo_consulta as tipo_consulta',
                 'consulta.created_at',
                 'consulta.updated_at')
                 ->where('consulta.id_unidade', '=', $filters['id_unidade'])
@@ -234,10 +241,6 @@ class ConsultaFilterService
 
             return $query;
         }
-
-
-
-
 
     }
 
