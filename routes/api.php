@@ -22,6 +22,7 @@ Route::middleware(['auth:sanctum', 'check.role'])->get('/user', function (Reques
 });
 
 Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
+    Route::get('usuarios', 'UserController@indexAll');
     //ROTA DE PACIENTES
     Route::get('pacientes', 'PacienteController@indexAll');
     Route::post('pacientes', 'PacienteController@store');
@@ -77,11 +78,14 @@ Route::middleware(['auth:sanctum', 'check.role'])->group(function () {
     Route::get('consultas', 'ConsultaController@indexAll');
     Route::get('consultas/{id}', 'ConsultaController@indexById');
     Route::delete('consultas/{id}', 'ConsultaController@delete');
+
 });
 
 Route::prefix('auth')->group(function(){
     Route::post('login', [LoginController::class, 'login']);
     Route::post('logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
-    Route::post('register', [RegisterController::class, 'register']);
+    Route::post('cadastro', [RegisterController::class, 'register'])->middleware('check.role');;
+
 });
+
 

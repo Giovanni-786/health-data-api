@@ -22,7 +22,7 @@ class RegisterController extends Controller
         $password = $request->get('password');
         $cargo = $request->get('cargo');
         $id_medico = $request->get('id_medico');
-
+        $id_unidade = $request->get('id_unidade');
         try{
             //caso for medico, id_medico é obrigatório.
             if($cargo == 'medico'){
@@ -37,6 +37,7 @@ class RegisterController extends Controller
             $createUser->email = $email;
             $createUser->password = $password;
             $createUser->cargo = $cargo;
+            $createUser->id_unidade = $id_unidade;
             $createUser->id_medico = $id_medico;
             $createUser->save();
 

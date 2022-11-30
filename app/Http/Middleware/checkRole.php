@@ -28,6 +28,9 @@ class checkRole
                     return response()->json(['data'=>'não autorizado'], 403);
                 }
             }
+            if($request->getPathInfo() == '/api/auth/register' ){
+                return response()->json(['data'=>'não autorizado'], 403);
+            }
             if($request->getPathInfo() == '/api/medicos' ){
                 if($request->getMethod() == 'DELETE'){
                     return response()->json(['data'=>'não autorizado'], 403);
@@ -64,6 +67,10 @@ class checkRole
         }
 
         if($user->cargo == 'assistente'){
+            if($request->getPathInfo() == '/api/auth/register' ){
+                return response()->json(['data'=>'não autorizado'], 403);
+            }
+
             if($request->getPathInfo() == '/api/alergias' ){
                 if($request->getMethod() != 'GET'){
                     return response()->json(['data'=>'não autorizado'], 403);
