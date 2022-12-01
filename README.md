@@ -52,6 +52,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 - Instale as dependências: `yarn install`
 - Rode o comando para instalação dos pacotes: `composer install`
 - Rode o comando para criar as migrations: `php artisan migrate`
+- Crie a chave do projeto: `php artisan key:generate`
 - Inicie a aplicação: `php artisan serve`
  
  
