@@ -16,10 +16,11 @@
 
 ## :bookmark: Sobre
 
-<strong>HealtData</strong> O HealtData é uma API destinada para a área da sáude, onde integramos informações importantes entre as unidades como uma ficha integrada do paciente e também seu histórico médico, contendo informações importantes para a qualidade da consulta.
+<strong>HealtData</strong> é uma API destinada para a área da sáude, onde integramos informações importantes entre as unidades como uma ficha integrada do paciente e também seu histórico médico, contendo informações importantes para a qualidade da consulta.
 O objetivo é facilitar a comunicação entre os hospitais, fornecendo uma API REST de fácil consumo e de rápida implementação.
 Como se trata de um projeto piloto, existem muitas contribuições e features que podem ser implementadas ou melhoradas, fique a vontade para contribuir com o projeto.
 
+Documentação da API: https://documenter.getpostman.com/view/22793690/2s8Yt1qp9h
 
 <a id="tecnologias-utilizadas"></a>
 
