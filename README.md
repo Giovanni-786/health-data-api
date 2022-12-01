@@ -36,7 +36,7 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
 
 ## :fire: **Pré-requisitos**
 
-- [Composer/version 2.4.2](https://getcomposer.org/)
+- [Composer/version >= 2.4.2](https://getcomposer.org/)
 
 <a id="como-usar"></a>
 
