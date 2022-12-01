@@ -49,7 +49,6 @@ O projeto foi desenvolvido utilizando as seguintes tecnologias
     - DB_DATABASE -> nome do banco de dados criado
     - DB_USERNAME -> usuário do banco
     - DB_PASSWORD -> senha
-- Instale as dependências: `yarn install`
 - Rode o comando para instalação dos pacotes: `composer install`
 - Rode o comando para criar as migrations: `php artisan migrate`
 - Crie a chave do projeto: `php artisan key:generate`
